@@ -2,16 +2,19 @@ const getTemplate = (data = [], placeholder, selectedId) => {
   let text = placeholder ?? 'Placeholder по умолчанию';
 
   const items = data.map(item => {
+    let cls = '';
     if (item.id === selectedId) {
       text = item.value;
+      cls = 'selected';
     }
 
     return `
-      <li class="select__item" data-type="item" data-id="${item.id}">${item.value}</li>    
+      <li class="select__item ${cls}" data-type="item" data-id="${item.id}">${item.value}</li>    
     `;
   })
 
   return `
+    <div class="select__backdrop" data-type="backdrop"></div>
     <div class="select__input" data-type="input">
       <span data-type="value">${text}</span> 
       <i class="fa-solid fa-caret-down" data-type="arrow"></i>
@@ -55,6 +58,8 @@ export class Select {
     } else if (type === 'item') {
       const id = event.target.dataset.id;
       this.select(id);
+    } else if (type === 'backdrop') {
+      this.close();
     }
   }
 
@@ -96,6 +101,11 @@ export class Select {
     this.arrow.classList.remove('fa-caret-up');
     if (!this.selector.classList.contains("open")) true;
     return false;
+  }
+
+  destroy() {
+    this.select.removeEventListener('click', this.clickHandler);
+    this.select.innerHTML = '';
   }
 
 }
