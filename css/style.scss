@@ -73,6 +73,10 @@ $height: 46px;
       background-color: #eee;  
       cursor: pointer;
     }
+
+    &.selected {
+      background-color: bisque;
+    }
   }
 
 }
